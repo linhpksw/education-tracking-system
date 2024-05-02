@@ -1,6 +1,6 @@
 package com.clbanhsang.educationtrackingsystem.Controller;
 
-import com.clbanhsang.educationtrackingsystem.dao.UserDao;
+import com.clbanhsang.educationtrackingsystem.dto.UserDTO;
 import com.clbanhsang.educationtrackingsystem.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -35,8 +35,8 @@ public class UserController {
     }
 
     @GetMapping("/login")
-    public String login(Model model, UserDao userDao) {
-        model.addAttribute("user", userDao);
+    public String login(Model model, UserDTO userDTO) {
+        model.addAttribute("user", userDTO);
         return "login";
     }
 
@@ -47,14 +47,14 @@ public class UserController {
     }
 
     @GetMapping("/register")
-    public String register(Model model, UserDao userDao) {
-        model.addAttribute("user", userDao);
+    public String register(Model model, UserDTO userDTO) {
+        model.addAttribute("user", userDTO);
         return "register";
     }
 
     @PostMapping("/register")
-    public String registerSave(Model model, UserDao userDao) {
-        userService.save(userDao);
+    public String registerSave(Model model, UserDTO userDTO) {
+        userService.save(userDTO);
         return "redirect:/login";
     }
 
