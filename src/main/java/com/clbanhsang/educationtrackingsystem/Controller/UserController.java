@@ -1,7 +1,10 @@
-package com.clbanhsang.educationtrackingsystem.Controller;
+package com.clbanhsang.educationtrackingsystem.controller;
 
 import com.clbanhsang.educationtrackingsystem.dto.UserDTO;
 import com.clbanhsang.educationtrackingsystem.service.UserService;
+
+import com.clbanhsang.educationtrackingsystem.model.User;
+import com.clbanhsang.educationtrackingsystem.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -17,6 +20,7 @@ import java.security.Principal;
 @Controller
 public class UserController {
 
+    //    private UserService userService;
     @Autowired
     private UserDetailsService userDetailsService;
 
@@ -56,6 +60,7 @@ public class UserController {
     public String registerSave(Model model, UserDTO userDTO) {
         userService.save(userDTO);
         return "redirect:/login";
+
     }
 
 
