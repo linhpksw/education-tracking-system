@@ -59,8 +59,6 @@ public class UserController {
     @PostMapping("/register")
     public String registerSave(Model model, UserDTO userDTO) {
         userService.save(userDTO);
-        System.out.println("ahiihih");
-        System.out.println("ahiihih");
         return "redirect:/login";
 
     }

@@ -1,7 +1,7 @@
 package com.clbanhsang.educationtrackingsystem.service;
 
 import com.clbanhsang.educationtrackingsystem.model.User;
-import com.clbanhsang.educationtrackingsystem.respositories.UserRepository;
+import com.clbanhsang.educationtrackingsystem.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

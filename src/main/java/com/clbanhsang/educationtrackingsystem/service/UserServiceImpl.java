@@ -2,7 +2,7 @@ package com.clbanhsang.educationtrackingsystem.service;
 
 import com.clbanhsang.educationtrackingsystem.dto.UserDTO;
 import com.clbanhsang.educationtrackingsystem.model.User;
-import com.clbanhsang.educationtrackingsystem.respositories.UserRepository;
+import com.clbanhsang.educationtrackingsystem.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
