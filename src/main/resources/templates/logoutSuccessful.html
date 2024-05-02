@@ -1,0 +1,19 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Home page</title>
+</head>
+<body>
+<div class="dashboard">
+    <h1 class="dashboard-title">Welcome</h1>
+    <div class="dashboard-user">
+        <h2 th:text="${userdetail.fullname}" class="dashboard-username">User'name</h2>
+    </div>
+</div>
+<span sec:authorize="isAuthenticated"><a th:href="@{/logoutSuccessful.html}">Logout</a></span>
+</body>
+</html>
