@@ -1,7 +1,7 @@
 package com.clbanhsang.educationtrackingsystem;
 
 import com.clbanhsang.educationtrackingsystem.model.User;
-import com.clbanhsang.educationtrackingsystem.respositories.UserRepository;
+import com.clbanhsang.educationtrackingsystem.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
