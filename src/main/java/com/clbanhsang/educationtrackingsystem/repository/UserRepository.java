@@ -1,4 +1,4 @@
-package com.clbanhsang.educationtrackingsystem.respositories;
+package com.clbanhsang.educationtrackingsystem.repository;
 
 import com.clbanhsang.educationtrackingsystem.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
