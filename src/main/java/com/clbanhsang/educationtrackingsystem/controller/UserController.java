@@ -1,4 +1,4 @@
-package com.clbanhsang.educationtrackingsystem.controller;
+package com.clbanhsang.educationtrackingsystem.Controller;
 
 
 import com.clbanhsang.educationtrackingsystem.model.User;
