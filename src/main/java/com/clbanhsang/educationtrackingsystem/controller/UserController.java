@@ -1,20 +1,18 @@
-package com.clbanhsang.educationtrackingsystem.Controller;
+package com.clbanhsang.educationtrackingsystem.controller;
 
-//import com.clbanhsang.educationtrackingsystem.dao.UserDao;
+
 import com.clbanhsang.educationtrackingsystem.model.User;
-import com.clbanhsang.educationtrackingsystem.respositories.UserRepository;
-//import com.clbanhsang.educationtrackingsystem.service.UserService;
+import com.clbanhsang.educationtrackingsystem.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public class UserController {
 
-//    private UserService userService;
+    //    private UserService userService;
     @Autowired
     private UserRepository repo;
 
@@ -37,7 +35,7 @@ public class UserController {
 
     @PostMapping("/register")
     public String registerSave(User user) {
-            repo.save(user);
+        repo.save(user);
         return "register_successful";
     }
 

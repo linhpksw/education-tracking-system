@@ -1,14 +1,25 @@
 package com.clbanhsang.educationtrackingsystem.model;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Collection;
+import java.util.List;
+
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
-@Getter
-@Setter
 @Table(name = "users")
-public class User {
+public class User implements UserDetails {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -19,32 +30,48 @@ public class User {
     @Column(nullable = false, length = 30)
     private String password;
 
-    @Column(nullable = false, length = 40)
-    private String fullName;
+    @Column(nullable = false, length = 20)
+    private String firstName;
 
-    @Column(nullable = false)
-    private String birthDay;
+    @Column(nullable = false, length = 20)
+    private String lastName;
 
-    @Column(nullable = false, length = 30)
-    private String highSchool;
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
-    @Column(nullable = false, length = 30)
-    private String address;
-
-    @Column(nullable = false, length = 11)
-    private String telephoneNumber;
-
-    public User() {
-
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(role.name()));
     }
 
-    public User(String email, String password, String fullName, String birthDay, String highSchool, String address, String telephoneNumber) {
-        this.email = email;
-        this.password = password;
-        this.fullName = fullName;
-        this.birthDay = birthDay;
-        this.highSchool = highSchool;
-        this.address = address;
-        this.telephoneNumber = telephoneNumber;
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }
