@@ -52,8 +52,8 @@ public class SecurityConfig {
                 .formLogin(login -> login.loginPage("/login").loginProcessingUrl("/login")
                         .usernameParameter("email").passwordParameter("password").
                         defaultSuccessUrl("/?login?success", true)
-                        .failureForwardUrl("/login?success=fail"))
-                .logout(logout -> logout.logoutUrl("/logout").logoutSuccessUrl("/login?logout=success"));
+                        .failureUrl("/login?success=fail"))
+                .logout(logout -> logout.logoutUrl("/logout").logoutSuccessUrl("/login"));
 
         return http.build();
     }
