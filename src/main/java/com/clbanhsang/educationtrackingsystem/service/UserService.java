@@ -10,5 +10,5 @@ public interface UserService {
     User findUserByEmail(String email);
     User save(UserDTO userDTO);
     List<User> getListUsers();
-    User findUserById(long id);
+    User findUserById(long id) throws UserNotfoundException;
 }

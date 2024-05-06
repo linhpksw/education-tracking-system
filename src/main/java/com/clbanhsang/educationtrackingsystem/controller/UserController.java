@@ -2,6 +2,7 @@ package com.clbanhsang.educationtrackingsystem.controller;
 
 import com.clbanhsang.educationtrackingsystem.dto.UserDTO;
 import com.clbanhsang.educationtrackingsystem.model.User;
+import com.clbanhsang.educationtrackingsystem.service.UserNotfoundException;
 import com.clbanhsang.educationtrackingsystem.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -31,16 +32,14 @@ public class UserController {
     }
 
     // get user by Id
-//    @GetMapping("/{id}")
-//    public User getUser(@PathVariable long id) {
-//        System.out.println("id: " + id);
-//         return null;
-//    }
-
     @GetMapping("/{id}")
-    public ResponseEntity<?> getUserById(@PathVariable long id) {
-        System.out.println("id: " + id);
-        return null;
+    public ResponseEntity<User> getUser(@PathVariable long id) {
+        try {
+            User user = userService.findUserById(id);
+            return ResponseEntity.ok(user);
+        } catch (UserNotfoundException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     //update user information

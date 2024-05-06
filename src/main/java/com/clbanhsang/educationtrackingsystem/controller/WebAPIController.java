@@ -35,7 +35,7 @@ public class WebAPIController {
     @GetMapping("/login")
     public String login(Model model, UserDTO userDTO) {
         model.addAttribute("user", userDTO);
-        return "redirect:/login";
+        return "login";
     }
 
     @RequestMapping(value = "/logoutSuccessful", method = RequestMethod.GET)
