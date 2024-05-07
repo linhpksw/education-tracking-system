@@ -2,14 +2,15 @@ package com.clbanhsang.educationtrackingsystem;
 
 import com.clbanhsang.educationtrackingsystem.model.User;
 import com.clbanhsang.educationtrackingsystem.repository.UserRepository;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.annotation.Rollback;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.Optional;
+
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -17,35 +18,64 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class UserRepositoryTest {
 
     @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private TestEntityManager entityManager;
+    UserRepository userRepository;
 
     @Test
-    public void testCreateUser() {
+    public void addNew() {
         User user = new User();
-        user.setEmail("test2@test.com");
-        user.setPassword("0123456");
-        user.setAddress("Hai Duong");
-        user.setBirthDay("01/03/2000");
-        user.setFullName("nguyen trong dat");
-        user.setHighSchool("fpt");
-        user.setTelephoneNumber("123456789");
 
+        user.setRole("ROLE_USER");
+        user.setEmail("test123@test.com");
+        user.setPassword("123456");
+        user.setAddress("test address");
+        user.setBirthDay("12/04/2000");
+        user.setHighSchool("Test High School");
+        user.setFullName("Test Full Name");
+        user.setTelephoneNumber("1234567890");
+        User userSaved = userRepository.save(user);
+        Assertions.assertThat(userSaved).isNotNull();
+        Assertions.assertThat(userSaved.getId()).isGreaterThan(0);
 
-
-        User savedUser = userRepository.save(user);
-
-        User existUser = entityManager.find(User.class, savedUser.getId());
-
-        assertThat(existUser.getEmail()).isEqualTo(user.getEmail());
     }
 
     @Test
-    public void findUserByEmail() {
-        String email = "nguyenvanb@gmail.com";
-        User user = userRepository.findByEmail(email);
-        assertThat(user).isNotNull();
+    public void testListAll() {
+        Iterable<User> listUser = userRepository.findAll();
+        Assertions.assertThat(listUser).hasSizeGreaterThan(0);
+
+        for (User user : listUser) {
+            System.out.println(user);
+        }
+    }
+
+    @Test
+    public void testUpdate() {
+        long userId = 502;
+        Optional<User> optionalUser = userRepository.findById(userId);
+        User user = optionalUser.get();
+        user.setRole("student");
+        user.setEmail("changeemail@test.com");
+        user.setPassword("changepassword");
+        userRepository.save(user);
+
+        User updatedUser = userRepository.findById(userId).get();
+        Assertions.assertThat(updatedUser.getPassword()).isEqualTo("changepassword");
+
+    }
+
+    @Test
+    public void testGet() {
+        long userId = 502;
+        Optional<User> optionalUser = userRepository.findById(userId);
+        Assertions.assertThat(optionalUser).isPresent();
+        System.out.println(optionalUser.get());
+    }
+
+    @Test
+    public void testDelete() {
+        long userId = 502;
+        userRepository.deleteById(userId);
+        Optional<User> optionalUser = userRepository.findById(userId);
+         Assertions.assertThat(optionalUser).isNotPresent();
     }
 }
