@@ -1,9 +1,9 @@
 package com.clbanhsang.educationtrackingsystem.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.clbanhsang.educationtrackingsystem.exception.ErrorCode;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Size;
+import lombok.*;
 
 @Setter
 @Getter
@@ -11,8 +11,14 @@ import lombok.Setter;
 @NoArgsConstructor
 public class UserDTO {
 
+    @Email()
+    @NonNull
     private String email;
+
+    @NonNull
+    @Size(min = 8, max = 20, message = "INVALID_PASSWORD")
     private String password;
+
     private String fullName;
     private String birthDay;
     private String highSchool;

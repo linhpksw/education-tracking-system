@@ -1,10 +1,12 @@
 package com.clbanhsang.educationtrackingsystem.controller;
 
+import com.clbanhsang.educationtrackingsystem.dto.APIResponse;
 import com.clbanhsang.educationtrackingsystem.dto.UserDTO;
 import com.clbanhsang.educationtrackingsystem.model.User;
 import com.clbanhsang.educationtrackingsystem.repository.UserRepository;
 import com.clbanhsang.educationtrackingsystem.service.UserNotfoundException;
 import com.clbanhsang.educationtrackingsystem.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,17 +25,10 @@ public class UserController {
 
     // Save new user
     @PostMapping
-    public User registerSave(@RequestBody UserDTO userDTO) throws RuntimeException {
-        try {
-            User user = userRepository.findByEmail(userDTO.getEmail());
-            if (user == null) {
-                System.out.println("User " + userDTO.getEmail() + " registered successfully");
-                return userService.save(userDTO);
-            }
-        } catch (RuntimeException e) {
-            System.out.println("Error :" + e.getMessage());
-        }
-        return null;
+    APIResponse <User> registerSave(@RequestBody @Valid UserDTO userDTO) {
+        APIResponse <User> apiResponse = new APIResponse();
+        apiResponse.setResult(userService.save(userDTO));
+        return apiResponse;
     }
 
     // get list user
