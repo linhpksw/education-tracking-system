@@ -48,9 +48,23 @@ public class UserServiceImpl implements UserService {
         throw  new UserNotfoundException("Could not find any user with id: " + id);
     }
 
-
-
-
-
-
+    @Override
+    public User replaceUser(long id, UserDTO userDTO) {
+        try {
+            if (userRepository.findById(id).isPresent()) {
+                User user = userRepository.findById(id).get();
+                user.setFullName(userDTO.getFullName());
+                user.setEmail(userDTO.getEmail());
+                user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+                user.setHighSchool(userDTO.getHighSchool());
+                user.setAddress(userDTO.getAddress());
+                user.setTelephoneNumber(userDTO.getTelephoneNumber());
+                user.setRole(userDTO.getRole());
+                userRepository.save(user);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return userRepository.findById(id).get();
+    }
 }
