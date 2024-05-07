@@ -23,15 +23,15 @@ public class UserController {
 
     // Save new user
     @PostMapping
-    public User registerSave(@RequestBody UserDTO userDTO) {
+    public User registerSave(@RequestBody UserDTO userDTO) throws RuntimeException {
         try {
             User user = userRepository.findByEmail(userDTO.getEmail());
             if (user == null) {
                 System.out.println("User " + userDTO.getEmail() + " registered successfully");
                 return userService.save(userDTO);
             }
-        } catch (Exception e) {
-            System.out.println("Error: email already exists");
+        } catch (RuntimeException e) {
+            System.out.println("Error :" + e.getMessage());
         }
         return null;
     }
