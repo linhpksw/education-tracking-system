@@ -2,6 +2,8 @@ package com.clbanhsang.educationtrackingsystem.controller;
 
 import com.clbanhsang.educationtrackingsystem.dto.APIResponse;
 import com.clbanhsang.educationtrackingsystem.dto.UserDTO;
+import com.clbanhsang.educationtrackingsystem.exception.AppException;
+import com.clbanhsang.educationtrackingsystem.exception.ErrorCode;
 import com.clbanhsang.educationtrackingsystem.model.User;
 import com.clbanhsang.educationtrackingsystem.repository.UserRepository;
 import com.clbanhsang.educationtrackingsystem.service.UserNotfoundException;
@@ -39,46 +41,29 @@ public class UserController {
 
     // get user by Id
     @GetMapping("/{id}")
-    public ResponseEntity<User> getUser(@PathVariable long id) {
-        try {
-            User user = userService.findUserById(id);
-            if (user != null) {
-                return ResponseEntity.ok(user);
-            }
-        } catch (UserNotfoundException e) {
-            System.out.println("Error: " + e.getMessage());
-        }
-        return null;
+    public APIResponse<User> getUser(@PathVariable long id) {
+        APIResponse <User> apiResponse = new APIResponse();
+        apiResponse.setResult(userService.findUserById(id));
+        return apiResponse;
     }
 
     //update user information
     @PutMapping("/{id}")
-    ResponseEntity<Object> replaceUser(@PathVariable long id, @RequestBody UserDTO userDTO) throws UserNotfoundException {
-       try {
-           User user = userService.findUserById(id);
-           if (user != null) {
-               userService.replaceUser(id, userDTO);
-               System.out.println("User " + userDTO.getEmail() + " replaced successfully");
-               return ResponseEntity.ok(user);
-           }
-       } catch (UserNotfoundException e) {
-           System.out.println("Error: " + e.getMessage());
-       }
-        return null;
+    APIResponse<User> replaceUser(@PathVariable long id, @RequestBody UserDTO userDTO) {
+      APIResponse<User> apiResponse = new APIResponse();
+      apiResponse.setResult(userService.replaceUser(id, userDTO));
+      return apiResponse;
     }
 
     //Delete user by id
     @DeleteMapping("/{id}")
-    ResponseEntity<?> deleteUser(@PathVariable long id) throws UserNotfoundException {
-        try {
+    ResponseEntity<?> deleteUser(@PathVariable long id){
             User user = userService.findUserById(id);
             if (user != null) {
                 userRepository.delete(user);
                 System.out.println("User deleted successfully");
+                return ResponseEntity.ok().build();
             }
-        } catch (UserNotfoundException e) {
-            System.out.println("Error: " + e.getMessage());
-        }
-        return ResponseEntity.ok().build();
+            throw  new AppException(ErrorCode.USER_NOT_EXISTED);
     }
 }

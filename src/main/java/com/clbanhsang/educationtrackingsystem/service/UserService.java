@@ -10,7 +10,7 @@ public interface UserService {
     User findUserByEmail(String email);
     User save(UserDTO userDTO);
     List<User> getListUsers();
-    User findUserById(long id) throws UserNotfoundException;
+    User findUserById(long id);
     User replaceUser(long id, UserDTO userDTO);
 
 }
