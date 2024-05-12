@@ -1,6 +1,6 @@
 package com.clbanhsang.educationtrackingsystem.service;
 
-import com.clbanhsang.educationtrackingsystem.dto.UserDTO;
+import com.clbanhsang.educationtrackingsystem.dto.response.UserDTO;
 import com.clbanhsang.educationtrackingsystem.exception.AppException;
 import com.clbanhsang.educationtrackingsystem.exception.ErrorCode;
 import com.clbanhsang.educationtrackingsystem.model.User;

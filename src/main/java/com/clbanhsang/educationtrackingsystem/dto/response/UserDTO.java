@@ -1,6 +1,5 @@
-package com.clbanhsang.educationtrackingsystem.dto;
+package com.clbanhsang.educationtrackingsystem.dto.response;
 
-import com.clbanhsang.educationtrackingsystem.exception.ErrorCode;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
 import lombok.*;

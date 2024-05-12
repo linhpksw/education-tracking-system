@@ -1,12 +1,11 @@
 package com.clbanhsang.educationtrackingsystem.controller;
 
-import com.clbanhsang.educationtrackingsystem.dto.APIResponse;
-import com.clbanhsang.educationtrackingsystem.dto.UserDTO;
+import com.clbanhsang.educationtrackingsystem.dto.response.APIResponse;
+import com.clbanhsang.educationtrackingsystem.dto.response.UserDTO;
 import com.clbanhsang.educationtrackingsystem.exception.AppException;
 import com.clbanhsang.educationtrackingsystem.exception.ErrorCode;
 import com.clbanhsang.educationtrackingsystem.model.User;
 import com.clbanhsang.educationtrackingsystem.repository.UserRepository;
-import com.clbanhsang.educationtrackingsystem.service.UserNotfoundException;
 import com.clbanhsang.educationtrackingsystem.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

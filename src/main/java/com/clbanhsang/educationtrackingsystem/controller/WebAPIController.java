@@ -1,6 +1,6 @@
 package com.clbanhsang.educationtrackingsystem.controller;
 
-import com.clbanhsang.educationtrackingsystem.dto.UserDTO;
+import com.clbanhsang.educationtrackingsystem.dto.response.UserDTO;
 import com.clbanhsang.educationtrackingsystem.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;

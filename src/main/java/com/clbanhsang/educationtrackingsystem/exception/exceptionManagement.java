@@ -1,7 +1,6 @@
 package com.clbanhsang.educationtrackingsystem.exception;
 
-import ch.qos.logback.core.spi.ErrorCodes;
-import com.clbanhsang.educationtrackingsystem.dto.APIResponse;
+import com.clbanhsang.educationtrackingsystem.dto.response.APIResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
