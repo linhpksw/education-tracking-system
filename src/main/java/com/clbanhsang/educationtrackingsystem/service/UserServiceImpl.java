@@ -1,82 +1,66 @@
 package com.clbanhsang.educationtrackingsystem.service;
 
-import com.clbanhsang.educationtrackingsystem.dto.response.UserDTO;
+import com.clbanhsang.educationtrackingsystem.dto.request.UserCreateRequest;
+import com.clbanhsang.educationtrackingsystem.dto.request.UserUpdateRequest;
+import com.clbanhsang.educationtrackingsystem.dto.response.UserResponse;
 import com.clbanhsang.educationtrackingsystem.exception.AppException;
 import com.clbanhsang.educationtrackingsystem.exception.ErrorCode;
+import com.clbanhsang.educationtrackingsystem.mapper.UserMapper;
 import com.clbanhsang.educationtrackingsystem.model.User;
 import com.clbanhsang.educationtrackingsystem.repository.UserRepository;
-import lombok.SneakyThrows;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserServiceImpl implements UserService {
 
-    @Autowired
     PasswordEncoder passwordEncoder;
 
-    @Autowired
-    private UserRepository userRepository;
+    UserRepository userRepository;
 
-    public UserServiceImpl(UserRepository userRepository) {
+    UserMapper userMapper;
+
+    public UserServiceImpl(PasswordEncoder passwordEncoder, UserRepository userRepository, UserMapper userMapper) {
+        this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
+        this.userMapper = userMapper;
     }
 
     @Override
-    public User findUserByEmail(String email) {
-        return userRepository.findByEmail(email);
-    }
+    public UserResponse save(UserCreateRequest userCreateRequest) {
 
-    @SneakyThrows
-    @Override
-    public User save(UserDTO userDTO) {
-        User user = new User();
-
-        if (userRepository.existsByEmail(userDTO.getEmail()))
+        if (userRepository.findByEmail(userCreateRequest.getEmail()).isPresent())
             throw new AppException(ErrorCode.USER_EXISTED);
 
-        user.setEmail(userDTO.getEmail());
-        user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
-        user.setRole(userDTO.getRole());
-        user.setBirthDay(userDTO.getBirthDay());
-        user.setAddress(userDTO.getAddress());
-        user.setFullName(userDTO.getFullName());
-        user.setHighSchool(userDTO.getHighSchool());
-        user.setTelephoneNumber(userDTO.getTelephoneNumber());
+        User user = userMapper.toUser(userCreateRequest);
+        user.setPassword(passwordEncoder.encode(userCreateRequest.getPassword()));
 
-        return userRepository.save(user);
+        return userMapper.toUserResponse(userRepository.save(user));
     }
 
     @Override
-    public List<User> getListUsers() {
-        return userRepository.findAll();
+    public List<UserResponse> getListUsers() {
+        return userRepository.findAll().stream()
+                .map(userMapper::toUserResponse).toList();
     }
 
     @Override
-    public User findUserById(long id) {
-        Optional<User> user = userRepository.findById(id);
-        if (user.isPresent())
-            return user.get();
-        throw  new AppException(ErrorCode.USER_NOT_EXISTED);
+    public UserResponse findUserById(long id) {
+        return userMapper.toUserResponse(userRepository.findById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED)));
     }
 
     @Override
-    public User replaceUser(long id, UserDTO userDTO) {
-            if (userRepository.findById(id).isPresent()) {
-                User user = userRepository.findById(id).get();
-                user.setFullName(userDTO.getFullName());
-                user.setEmail(userDTO.getEmail());
-                user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
-                user.setHighSchool(userDTO.getHighSchool());
-                user.setAddress(userDTO.getAddress());
-                user.setTelephoneNumber(userDTO.getTelephoneNumber());
-                user.setRole(userDTO.getRole());
-                return userRepository.save(user);
-            }
-            throw  new AppException(ErrorCode.USER_NOT_EXISTED);
+    public UserResponse replaceUser(long id, UserUpdateRequest userUpdateRequest) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+        userMapper.updateUser(user, userUpdateRequest);
+
+        return userMapper.toUserResponse(userRepository.save(user));
     }
 }

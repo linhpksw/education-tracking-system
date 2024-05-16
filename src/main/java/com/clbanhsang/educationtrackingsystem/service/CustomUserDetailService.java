@@ -1,5 +1,7 @@
 package com.clbanhsang.educationtrackingsystem.service;
 
+import com.clbanhsang.educationtrackingsystem.exception.AppException;
+import com.clbanhsang.educationtrackingsystem.exception.ErrorCode;
 import com.clbanhsang.educationtrackingsystem.model.User;
 import com.clbanhsang.educationtrackingsystem.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,15 +21,14 @@ import java.util.List;
 public class CustomUserDetailService implements UserDetailsService {
 
     @Autowired
-    private UserRepository  userRepository;
+    private UserRepository userRepository;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         try {
-            User user = userRepository.findByEmail(email);
-            if (user == null) {
-                throw new UsernameNotFoundException("User not found with email: " + email);
-            }
+            User user = userRepository.findByEmail(email)
+                    .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+
             return new CustomUserDetail(user, getAuthorities(user));
         } catch (NullPointerException e) {
             System.out.println("Error while loading user by username: " + e.getMessage());
@@ -40,7 +41,6 @@ public class CustomUserDetailService implements UserDetailsService {
         List<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority("USER"));
         authorities.add(new SimpleGrantedAuthority("ADMIN"));
-        authorities.add(new SimpleGrantedAuthority("MANAGER"));
         return authorities;
     }
 

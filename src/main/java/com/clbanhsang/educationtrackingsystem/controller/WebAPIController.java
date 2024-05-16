@@ -1,6 +1,6 @@
 package com.clbanhsang.educationtrackingsystem.controller;
 
-import com.clbanhsang.educationtrackingsystem.dto.response.UserDTO;
+import com.clbanhsang.educationtrackingsystem.dto.response.UserResponse;
 import com.clbanhsang.educationtrackingsystem.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -33,8 +33,8 @@ public class WebAPIController {
     }
 
     @GetMapping("/login")
-    public String login(Model model, UserDTO userDTO) {
-        model.addAttribute("user", userDTO);
+    public String login(Model model, UserResponse userResponse) {
+        model.addAttribute("user", userResponse);
         return "login";
     }
 
@@ -45,8 +45,8 @@ public class WebAPIController {
     }
 
     @GetMapping("/register")
-    public String register(Model model, UserDTO userDTO) {
-        model.addAttribute("user", userDTO);
+    public String register(Model model, UserResponse userResponse) {
+        model.addAttribute("user", userResponse);
         return "register";
     }
 

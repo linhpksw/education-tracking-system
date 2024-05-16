@@ -1,18 +1,23 @@
 package com.clbanhsang.educationtrackingsystem.dto.response;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 @Data
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@JsonInclude(JsonInclude.Include.NON_NULL)
-public class APIResponse <T> {
+public class UserResponse {
 
-     String code = "1000";
-     String message;
-     T result;
+    long id;
+    String email;
+    String fullName;
+    String birthDay;
+    String highSchool;
+    String address;
+    String telephoneNumber;
+    String role;
+
+
 }

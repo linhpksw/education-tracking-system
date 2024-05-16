@@ -1,5 +1,6 @@
 package com.clbanhsang.educationtrackingsystem;
 
+import com.clbanhsang.educationtrackingsystem.mapper.UserMapper;
 import com.clbanhsang.educationtrackingsystem.model.User;
 import com.clbanhsang.educationtrackingsystem.repository.UserRepository;
 import org.assertj.core.api.Assertions;
@@ -11,6 +12,8 @@ import org.springframework.test.annotation.Rollback;
 
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -19,6 +22,8 @@ public class UserRepositoryTest {
 
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    private UserMapper userMapper;
 
     @Test
     public void addNew() {
@@ -76,6 +81,12 @@ public class UserRepositoryTest {
         long userId = 502;
         userRepository.deleteById(userId);
         Optional<User> optionalUser = userRepository.findById(userId);
-         Assertions.assertThat(optionalUser).isNotPresent();
+        Assertions.assertThat(optionalUser).isNotPresent();
     }
+
+    @Test
+    public void contextLoads() {
+        assertNotNull(userMapper, "UserMapper should be created by Spring");
+    }
+
 }
