@@ -1,5 +1,6 @@
 package com.clbanhsang.educationtrackingsystem.security;
 
+import com.clbanhsang.educationtrackingsystem.model.Role;
 import com.clbanhsang.educationtrackingsystem.service.CustomUserDetailService;
 import lombok.experimental.NonFinal;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
+import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import org.springframework.security.web.SecurityFilterChain;
 
 import javax.crypto.spec.SecretKeySpec;
@@ -56,7 +59,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)//  Vô hiệu hóa CSRF protection để cho phép đăng nhập qua form POST mà không cần token CSRF
                 .authorizeHttpRequests((authorize) -> authorize // Cấu hình xác thự yêu cầu cho ENDPOINT
                         .requestMatchers(HttpMethod.POST, PUBLIC_ENDPOINT).permitAll()
-//                        .requestMatchers(HttpMethod.GET, "/users").hasAuthority()
+                        .requestMatchers(HttpMethod.GET, "/users").hasRole(Role.ADMIN.name())
                         .anyRequest().authenticated());
 
 
@@ -69,7 +72,9 @@ public class SecurityConfig {
 //         Cấu hình jwt, ta cần jwtDecoder();
 //         Ạuthentication provider sẽ thực hiện decode token xem có hợp lệ hay không.
         http
-                .oauth2ResourceServer(oauth2 -> oauth2.jwt(jwtConfigurer -> jwtConfigurer.decoder(jwtDecoder())));
+                .oauth2ResourceServer(oauth2 -> oauth2.jwt(jwtConfigurer ->
+                        jwtConfigurer.decoder(jwtDecoder())
+                                .jwtAuthenticationConverter(jwtAuthenticationConverter())));
 
         return http.build();
     }
@@ -81,6 +86,17 @@ public class SecurityConfig {
         return NimbusJwtDecoder.withSecretKey(secretKeySpec)
                 .macAlgorithm(MacAlgorithm.HS512)
                 .build();
+    }
+
+    @Bean
+    JwtAuthenticationConverter jwtAuthenticationConverter() {
+        JwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
+        JwtAuthenticationConverter converter = new JwtAuthenticationConverter();
+        jwtGrantedAuthoritiesConverter.setAuthorityPrefix("ROLE_");
+        converter.setJwtGrantedAuthoritiesConverter(jwtGrantedAuthoritiesConverter);
+
+        return converter;
+
     }
 }
 

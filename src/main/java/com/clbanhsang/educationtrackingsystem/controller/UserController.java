@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,6 +25,7 @@ import java.util.List;
 @RequestMapping("/users")
 @RequiredArgsConstructor()
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@Slf4j
 public class UserController {
     @Autowired
     UserService userService;
@@ -33,7 +35,7 @@ public class UserController {
 
     // Save new user
     @PostMapping
-    APIResponse <UserResponse> registerSave(@RequestBody @Valid UserCreateRequest userCreateRequest) {
+    APIResponse<UserResponse> registerSave(@RequestBody @Valid UserCreateRequest userCreateRequest) {
         return APIResponse.<UserResponse>builder()
                 .result(userService.save(userCreateRequest))
                 .build();
@@ -42,6 +44,11 @@ public class UserController {
     // get list user
     @GetMapping
     APIResponse<List<UserResponse>> getListUser() {
+        var authentication = SecurityContextHolder.getContext().getAuthentication();
+        log.info("email : {}", authentication.getName());
+        authentication.getAuthorities().forEach(grantedAuthority -> log.info(grantedAuthority.getAuthority()));
+
+
         return APIResponse.<List<UserResponse>>builder()
                 .result(userService.getListUsers())
                 .build();
@@ -65,12 +72,12 @@ public class UserController {
 
     //Delete user by id
     @DeleteMapping("/{id}")
-    APIResponse<String> deleteUser(@PathVariable long id){
-            User user = userRepository.findById(id)
-                    .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
-            userRepository.deleteById(id);
-            return APIResponse.<String>builder()
-                    .result("User has been deleted")
-                    .build();
+    APIResponse<String> deleteUser(@PathVariable long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+        userRepository.deleteById(id);
+        return APIResponse.<String>builder()
+                .result("User has been deleted")
+                .build();
     }
 }
