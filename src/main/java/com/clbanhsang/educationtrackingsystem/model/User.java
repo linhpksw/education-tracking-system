@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.Set;
+
 
 @Entity
 @Getter
@@ -39,6 +41,8 @@ public class User {
     @Column(nullable = false, length = 10)
     String telephoneNumber;
 
-    @Column(nullable = false, length = 256)
-    String role;
+    @ElementCollection(targetClass = Role.class)
+    @CollectionTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id"))
+    @Enumerated(EnumType.STRING)
+    Set<Role> roles;
 }

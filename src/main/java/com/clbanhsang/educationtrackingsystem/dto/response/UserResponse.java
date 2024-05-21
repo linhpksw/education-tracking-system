@@ -3,6 +3,8 @@ package com.clbanhsang.educationtrackingsystem.dto.response;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.Set;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -17,7 +19,7 @@ public class UserResponse {
     String highSchool;
     String address;
     String telephoneNumber;
-    String role;
+    Set<String> roles;
 
 
 }

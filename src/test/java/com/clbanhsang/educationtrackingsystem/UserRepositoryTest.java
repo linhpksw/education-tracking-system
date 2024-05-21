@@ -28,8 +28,7 @@ public class UserRepositoryTest {
     @Test
     public void addNew() {
         User user = new User();
-
-        user.setRole("ROLE_USER");
+        
         user.setEmail("test123@test.com");
         user.setPassword("123456");
         user.setAddress("test address");
@@ -58,7 +57,6 @@ public class UserRepositoryTest {
         long userId = 502;
         Optional<User> optionalUser = userRepository.findById(userId);
         User user = optionalUser.get();
-        user.setRole("student");
         user.setEmail("changeemail@test.com");
         user.setPassword("changepassword");
         userRepository.save(user);

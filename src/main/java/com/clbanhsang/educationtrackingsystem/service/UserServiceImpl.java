@@ -6,6 +6,7 @@ import com.clbanhsang.educationtrackingsystem.dto.response.UserResponse;
 import com.clbanhsang.educationtrackingsystem.exception.AppException;
 import com.clbanhsang.educationtrackingsystem.exception.ErrorCode;
 import com.clbanhsang.educationtrackingsystem.mapper.UserMapper;
+import com.clbanhsang.educationtrackingsystem.model.Role;
 import com.clbanhsang.educationtrackingsystem.model.User;
 import com.clbanhsang.educationtrackingsystem.repository.UserRepository;
 import lombok.AccessLevel;
@@ -13,7 +14,9 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -39,6 +42,10 @@ public class UserServiceImpl implements UserService {
 
         User user = userMapper.toUser(userCreateRequest);
         user.setPassword(passwordEncoder.encode(userCreateRequest.getPassword()));
+
+        Set<Role> roles = new HashSet<>();
+        roles.add(Role.USER);
+        user.setRoles(roles);
 
         return userMapper.toUserResponse(userRepository.save(user));
     }
