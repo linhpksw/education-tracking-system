@@ -1,5 +1,6 @@
 package com.clbanhsang.educationtrackingsystem.dto.response;
 
+import com.clbanhsang.educationtrackingsystem.model.Role;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -19,7 +20,7 @@ public class UserResponse {
     String highSchool;
     String address;
     String telephoneNumber;
-    Set<String> roles;
+    Set<Role> roles;
 
 
 }

@@ -26,19 +26,19 @@ public class User {
     @Column(nullable = false, length = 256)
     String password;
 
-    @Column(nullable = false, length = 256)
+    @Column(length = 256)
     String fullName;
 
-    @Column(nullable = false)
+    @Column(length = 256)
     String birthDay;
 
-    @Column(nullable = false, length = 256)
+    @Column(length = 256)
     String highSchool;
 
-    @Column(nullable = false, length = 256)
+    @Column(length = 256)
     String address;
 
-    @Column(nullable = false, length = 10)
+    @Column(length = 10)
     String telephoneNumber;
 
     @ElementCollection(targetClass = Role.class)

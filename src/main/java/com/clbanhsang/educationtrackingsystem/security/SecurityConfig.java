@@ -25,14 +25,12 @@ import javax.crypto.spec.SecretKeySpec;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    @Autowired
-    private CustomUserDetailService customUserDetailService;
-
-    private final String[] PUBLIC_ENDPOINT = {"/**" ,"/home", "/register", "/users", "auth/token", "auth/introspect"};
-
+    private final String[] PUBLIC_ENDPOINT = {"/**", "/home", "/register", "/users", "auth/token", "auth/introspect"};
     @NonFinal
     @Value("${jwt.signerKey}")
     protected String SIGNER_KEY;
+    @Autowired
+    private CustomUserDetailService customUserDetailService;
 
     @Bean
     public static BCryptPasswordEncoder passwordEncoder() {
@@ -58,6 +56,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)//  Vô hiệu hóa CSRF protection để cho phép đăng nhập qua form POST mà không cần token CSRF
                 .authorizeHttpRequests((authorize) -> authorize // Cấu hình xác thự yêu cầu cho ENDPOINT
                         .requestMatchers(HttpMethod.POST, PUBLIC_ENDPOINT).permitAll()
+//                        .requestMatchers(HttpMethod.GET, "/users").hasAuthority()
                         .anyRequest().authenticated());
 
 
